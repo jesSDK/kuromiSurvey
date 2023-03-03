@@ -76,6 +76,7 @@ def main():
     """
     Runs all our functions for the program 
     """
+    print("Kuromi survey data average calculator")
     data = enter_survey_results()
     update_spreadsheet(data)
     calculate_average_result()
