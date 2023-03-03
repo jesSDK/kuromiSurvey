@@ -19,11 +19,11 @@ def enter_survey_results():
     while True: #Loop until we get valid data
         print("Please enter the survey results, seperated by a coma, for each age range from 16 to 24")
         print("e.g: 1,2,3,4,5,6,7,8,9")
-        data_str = input("Please enter the results: \n")
+        data_str = input("Please enter the results: \n") #Enter results, new line for heroku bug
 
         results = data_str.split(',')
         if validate_results(results):
-            break
+            break #if results are valid break the while loop
     return results
 
 def validate_results(results):
@@ -35,7 +35,7 @@ def validate_results(results):
         if len(results) != 9:
             raise ValueError (f"Expected 9 results, got {len(results)}")
         for value in results:
-            if (int(value) > 10 or int(value) < 0):
+            if (int(value) > 10 or int(value) < 0): #If value is higher than 10 or less than 0 including negatives numbers
                 raise ValueError(f"Expected a result between 0-10, got {value}")
     except ValueError as e:
         print (f"Error: {e}")
@@ -48,7 +48,7 @@ def update_spreadsheet(data):
     """
     print("Updating survey results...\n")
     sheet_to_update = SHEET.worksheet("survey_results")
-    sheet_to_update.append_row(data)
+    sheet_to_update.append_row(data) #Adds our new data to the spreadsheet
     print("Updated results!")
 
 def calculate_average_result():
@@ -59,13 +59,13 @@ def calculate_average_result():
     sheet = SHEET.worksheet("survey_results")
     results = []
     x = 1
-    while x <= sheet.col_count:
+    while x <= sheet.col_count: #iterate for each column in the worksheet
         col_values = sheet.col_values(x)
         values = [int(value) for value in col_values]
-        values.pop(0)
+        values.pop(0) #Remove first value from each list as it contains our age
         results.append(values)
         total = sum(values)
-        average = round(total / len(values))
+        average = round(total / len(values)) #Calculate the average
         print(f"Age: {x+15} , average score: {average}/10")
         x+=1
     print("Calculated!")
