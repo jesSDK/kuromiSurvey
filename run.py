@@ -46,9 +46,31 @@ def update_spreadsheet(data):
     """
     Updates our spreadsheet with the latest data
     """
+    print("Updating survey results...\n")
     sheet_to_update = SHEET.worksheet("survey_results")
-
     sheet_to_update.append_row(data)
+    print("Updated results!")
+
+def calculate_average_result():
+    """
+    Calculates the average score per age group
+    """
+    print("Calculating average score per age...")
+    sheet = SHEET.worksheet("survey_results")
+    results = []
+    x = 1
+    while x <= sheet.col_count:
+        col_values = sheet.col_values(x)
+        values = [int(value) for value in col_values]
+        values.pop(0)
+        results.append(values)
+        total = sum(values)
+        average = round(total / len(values))
+        print(f"Age: {x+15} , average score: {average}/10")
+        x+=1
+    print("Calculated!")
+
+
 
 def main():
     """
@@ -56,4 +78,5 @@ def main():
     """
     data = enter_survey_results()
     update_spreadsheet(data)
+    calculate_average_result()
 main()
